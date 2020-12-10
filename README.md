@@ -6,7 +6,7 @@ I created a Face Mask Detector that puts green boxes around faces that wear mask
 ![](maskdetector.gif)
 ## Dependencies
 - python 3.7
-- Tensorflow 2
+- Tensorflow 2.1
 - In addition, please `pip install -r requirements.txt`
  
 ## Dataset
