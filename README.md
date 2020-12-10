@@ -13,7 +13,7 @@ I created a Face Mask Detector that puts green boxes around faces that wear mask
 I used roughly 2,000 images from CelebA, half wearing fake masks. The fake masks were intelligently edited on top of people’s faces.
 
 ![Dataset examples](dataset_examples.PNG | width=100)  ![Masks Used](masks.PNG | width=5) 
-<img src="dataset_examples.PNG" width="48"> <img src="masks.PNG" width="5">
+<img src="dataset_examples.PNG" width="256"> <img src="masks.PNG" width="200">
 
 ## Running Mask Detector
 1. Change to correct directory:
