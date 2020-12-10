@@ -25,4 +25,4 @@ I used roughly 2,000 images from CelebA, half wearing fake masks. The fake masks
     ```
     If you do not put a path, the script will automatically turn on your webcam and predict upon those live frames.
 ## Results on Images
-![Example 2](predicted2.PNG) ![Example 6](predicted1.PNG)  
+<img src="predicted2.PNG" width="500"> <img src="predicted1.PNG" width="400">
