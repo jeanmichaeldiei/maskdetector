@@ -1,0 +1,142 @@
+<!doctype html>
+<style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 25px;
+    }
+    
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .3s;
+      transition: .3s;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .3s;
+      transition: .3s;
+    }
+    
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+    
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+    
+    .slider.round:before {
+      border-radius: 50%;
+    }
+    .line{
+    width: 502px;
+    height: 5px;
+    border-bottom: 1px solid black;
+    position: absolute;
+    }
+    </style>
+<title>Mask Detector</title>
+<h2>Select a file or turn on your webcam</h2>
+
+
+
+<form method="post" action="/" enctype="multipart/form-data">
+    
+    <div class="webcam_button">
+        
+        <!-- Rounded switch -->
+        <h3>Webcam Switch <label class="switch">
+        <input type="checkbox" id="myCheck" onclick="myFunction();" style="display:inline;">
+        <span class="slider round"></span>
+        </label>
+        <div class="line"></div>
+    </h3>
+    </div>
+
+
+    <dl>
+		<p>
+			<input type="file" name="file" autocomplete="off" required>
+		</p>
+    </dl>
+    
+    <p>
+        <input type="submit" value="Submit">
+        
+    </p>
+
+    <p>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </p>
+    {% if filename %}
+	<div>
+		<img id="pred_img" src="{{ url_for('display_image', filename=filename) }}" style="display:inline;max-height:100%; max-width:100%;border: thin solid black;">
+    </div>
+    {% endif %}
+    <div>
+		<img id="pred_webcam" src="{{ url_for('video_feed') }}" style="display:none;max-height:100%; max-width:100%;border: thin solid black;">
+    </div>
+    
+    <script>
+        function myFunction() {
+            
+          var checkBox = document.getElementById("myCheck");
+          var pred_img = document.getElementById("pred_img");
+          var pred_webcam = document.getElementById("pred_webcam");
+        //   console.log(checkBox.checked)
+          if (checkBox.checked == true){
+            if (pred_img != null){
+                pred_img.style.display = "none";
+            }
+            
+            pred_webcam.style.display = "inline";
+          } else {
+            if (pred_img != null){
+                pred_img.style.display = "inline";
+            }
+            pred_webcam.style.display = "none";
+          }
+        }
+    </script>
+
+
+</form>
