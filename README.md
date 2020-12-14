@@ -33,8 +33,8 @@ I used roughly 2,000 images from CelebA, half wearing fake masks. The fake masks
 
 <img src="webapp.PNG" width="500"> 
 
-## Running Mask Detector
-Alternatively, you can just run the detector through bash, instead of a browser
+## Running Mask Detector Script
+Alternatively, you can just run the detector through bash instead of a browser. As shown in the first gif above.
 1. Change to correct directory:
     ```bash
     cd code/
