@@ -1,8 +1,3 @@
-# The steps implemented in the object detection sample code: 
-# 1. for an image of width and height being (w, h) pixels, resize image to (w', h'), where w/h = w'/h' and w' x h' = 262144
-# 2. resize network input size to (w', h')
-# 3. pass the image to network and do inference
-# (4. if inference speed is too slow for you, try to make w' x h' smaller, which is defined with DEFAULT_INPUT_SIZE (in object_detection.py or ObjectDetection.cs))
 import argparse
 import tensorflow as tf
 import numpy as np
@@ -77,47 +72,36 @@ class MyVideoStream():
 
         # initialize the video stream and allow the camera sensor to warm up
         print("[INFO] starting video stream...")
-        #self.vs = VideoStream(src=0)#.start()
-        self.running_vs = None
-
-
+        self.running_vs = cv2.VideoCapture(0)
+        #self.isRunning = False
+        self.do_preds = False
     def predict_frame(self):
         # grab the frame from the threaded video stream and resize it
         # to have a maximum width of 500 pixels
-        ret, frame = self.running_vs.read()
-        #print(f"FRAME {frame}")
-        orig_h, orig_w = frame.shape[:2]
-        new_w, new_h = 500, int(500*orig_h/orig_w)
-        frame = cv2.resize(frame, (new_w, new_h))
-        predictions = self.model.predict_image(Image.fromarray(frame))
-        frame, flag = self.model.annotate_frame(predictions,new_w,new_h,frame)
-        
-        ret, jpeg = cv2.imencode('.jpg', frame)
-        return jpeg.tobytes()
+        if self.running_vs:
+            ret, frame = self.running_vs.read()
+            if frame is None:
+                return ''.encode()
+            orig_h, orig_w = frame.shape[:2]
+            new_w, new_h = 500, int(500*orig_h/orig_w)
+            frame = cv2.resize(frame, (new_w, new_h))
+            
+            if self.do_preds:
+                predictions = self.model.predict_image(Image.fromarray(frame))
+                frame, flag = self.model.annotate_frame(predictions,new_w,new_h,frame)
+            
+            ret, jpeg = cv2.imencode('.jpg', frame)
+            return jpeg.tobytes()
+        else:
+            print("Error getting webcam frames.")
+            return ''.encode()
 
-    def power_on(self):
-        self.running_vs = cv2.VideoCapture(0)
+def create_model():
+    #Load labels
+    with open(LABELS_FILENAME, 'r') as f:
+        labels = [l.strip() for l in f.readlines()]
 
-    def power_off(self):
-        # do a bit of cleanup
-        cv2.destroyAllWindows()
-        self.running_vs.release()
-
-class VideoCamera(object):
-    def __init__(self):
-        self.video = cv2.VideoCapture(0)
-
-    def __del__(self):
-        self.video.release()        
-
-    def get_frame(self):
-        ret, frame = self.video.read()
-
-        # DO WHAT YOU WANT WITH TENSORFLOW / KERAS AND OPENCV
-
-        ret, jpeg = cv2.imencode('.jpg', frame)
-
-        return jpeg.tobytes()
+    return TFLiteObjectDetection(MODEL_FILENAME, labels)
 
 def predict_image(model, image_filename):
     image = Image.open(image_filename)
@@ -126,28 +110,4 @@ def predict_image(model, image_filename):
 
     predictions = model.predict_image(image)
     frame, flag = model.annotate_frame(predictions,w,h,open_cv_image)
-    # show the output image
-    # cv2.imshow("Output", frame)
-    # cv2.waitKey(0)
     return frame, flag
-
-def create_model():
-    #Load labels
-    with open(LABELS_FILENAME, 'r') as f:
-        labels = [l.strip() for l in f.readlines()]
-
-    return TFLiteObjectDetection(MODEL_FILENAME, labels)
-def main(image_filename=None):
-    
-    od_model = create_model()
-    if image_filename:
-        predict_image(od_model,image_filename)
-    else:
-       predict_webcam(od_model)
-
-
-if __name__ == '__main__':
-    if len(sys.argv) <= 1:
-        main()
-    else:
-        main(sys.argv[1])

@@ -67,7 +67,7 @@
     }
     </style>
 <title>Mask Detector</title>
-<h2>Select a file or turn on your webcam</h2>
+<h2>Select a file or switch to webcam view</h2>
 
 
 
@@ -76,8 +76,8 @@
     <div class="webcam_button">
         
         <!-- Rounded switch -->
-        <h3>Webcam Switch <label class="switch">
-        <input type="checkbox" id="myCheck" onclick="myFunction();" style="display:inline;">
+        <h3>Webcam View <label class="switch">
+        <input type="checkbox" name="webClick" id="myCheck" onclick="myFunction()" style="display:inline;">
         <span class="slider round"></span>
         </label>
         <div class="line"></div>
@@ -122,19 +122,24 @@
           var checkBox = document.getElementById("myCheck");
           var pred_img = document.getElementById("pred_img");
           var pred_webcam = document.getElementById("pred_webcam");
-        //   console.log(checkBox.checked)
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/webcam_controller");
+          xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
           if (checkBox.checked == true){
             if (pred_img != null){
                 pred_img.style.display = "none";
             }
-            
+            xhr.send(JSON.stringify({ status: "true" }));
             pred_webcam.style.display = "inline";
-          } else {
+          } 
+          else {
             if (pred_img != null){
                 pred_img.style.display = "inline";
             }
+            xhr.send(JSON.stringify({ status: "false" }));
             pred_webcam.style.display = "none";
           }
+          console.log(pred_webcam)
         }
     </script>
 
