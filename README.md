@@ -6,7 +6,7 @@ I created a Face Mask Detector that puts green boxes around faces that wear mask
 
 I used Microsoft’s Custom Vision service to label my dataset and train an Tensorflow lite object detection model.
  
-The trained model came with a short script to perform basic inference, and I took it a few steps further to develop a webapp and run the model through a webcam and annotes the livestream or image with the predictions.
+The trained model came with a short script to perform basic inference, and I took it a few steps further to develop a webapp with Flask. The web application runs the model through a webcam or an uploaded image and annotes them with the predictions.
 
 ![](maskdetector.gif)
 ## Dependencies
