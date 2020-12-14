@@ -6,13 +6,13 @@ I created a Face Mask Detector that puts green boxes around faces that wear mask
 ![](maskdetector.gif)
 ## Dependencies
 - python 3.7
-- Tensorflow 2
+- Tensorflow 2.1
 - In addition, please `pip install -r requirements.txt`
  
 ## Dataset
 I used roughly 2,000 images from CelebA, half wearing fake masks. The fake masks were intelligently edited on top of people’s faces.
 
-![Dataset examples](dataset_examples.PNG)  ![Masks Used](masks.PNG) 
+<img src="dataset_examples.PNG" width="500"> <img src="masks.PNG" width="350">
 
 ## Running Mask Detector
 1. Change to correct directory:
@@ -25,4 +25,4 @@ I used roughly 2,000 images from CelebA, half wearing fake masks. The fake masks
     ```
     If you do not put a path, the script will automatically turn on your webcam and predict upon those live frames.
 ## Results on Images
-![Example 2](predicted2.PNG) ![Example 6](predicted1.PNG)  
+<img src="predicted2.PNG" width="400"> <img src="predicted1.PNG" width="400">
